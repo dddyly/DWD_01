@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlearn</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #unlearn-button {
+            background-color: black;
+            color: white;
+            border: 1.5px solid white;
+            padding: 15px 25px;
+            font-size: 12px;
+            cursor: pointer;
+            text-transform: lowercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        #unlearn-button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        #sentence-display {
+            position: absolute;
+            font-size: 20px;
+            max-width: 60%;
+            text-align: center;
+            line-height: 1.6;
+            transition: all 1.5s ease;
+            font-family: Garamond, 'EB Garamond', Georgia, serif;
+        }
+    </style>
+</head>
+<body>
+    <button id="unlearn-button">unlearn</button>
+    <div id="sentence-display"></div>
+
+    <script>
+        // Placeholder sentences - replace these with actual Cyborg Manifesto text
+        const sentences = [
+" This essay is an effort to build an ironic political myth faithful to feminism, socialism, and materialism. ",
+
+" Perhaps more faithful as blasphemy is faithful, than as reverent worship and identification. ",
+
+" Blasphemy has always seemed to require taking things very seriously. ",
+
+" I know no better stance to adopt from within the secular-religious, evangelical traditions of United States politics, including the politics of socialist feminism. ",
+
+" Blasphemy protects one from the moral majority within, while still insisting on the need for community. ",
+
+" Blasphemy is not apostasy. ",
+
+" Irony is about contradictions that do not resolve into larger wholes, even dialectically, about the tension of holding incompatible things together because both or all are necessary and true. ",
+
+" Irony is about humour and serious play. ",
+
+" It is also a rhetorical strategy and a political method, one I would like to see more honoured within socialist-feminism. ",
+
+" At the centre of my ironic faith, my blasphemy, is the image of the cyborg. ",
+
+" A cyborg is a cybernetic organism, a hybrid of machine and organism, a creature of social reality as well as a creature of fiction. ",
+
+" Social reality is lived social relations, our most important political construction, a world-changing fiction. ",
+
+" The international women's movements have constructed 'women's experience', as well as uncovered or discovered this crucial collective object. ",
+
+" This experience is a fiction and fact of the most crucial, political kind. ",
+
+" Liberation rests on the construction of the consciousness, the imaginative apprehension, of oppression, and so of possibility. ",
+
+" The cyborg is a matter of fiction and lived experience that changes what counts as women's experience in the late twentieth century. ",
+
+" This is a struggle over life and death, but the boundary between science fiction and social reality is an optical illusion. ",
+
+" Contemporary science fiction is full of cyborgs—creatures simultaneously animal and machine, who populate worlds ambiguously natural and crafted. ",
+
+" Modern medicine is also full of cyborgs, of couplings between organism and machine, each conceived as coded devices, in an intimacy and with a power that was not generated in the history of sexuality. ",
+
+" Cyborg 'sex' restores some of the lovely replicative baroque of ferns and invertebrates (such nice organic prophylactics against heterosexism). ",
+
+" Cyborg replication is uncoupled from organic reproduction. ",
+
+" Modern production seems like a dream of cyborg colonization work, a dream that makes the nightmare of Taylorism seem idyllic. ",
+
+" And modern war is a cyborg orgy, coded by C3I, command-control-communication-intelligence, an $84 billion item in 1984's US defence budget. ",
+
+" I am making an argument for the cyborg as a fiction mapping our social and bodily reality and as an imaginative resource suggesting some very fruitful couplings. ",
+
+" Michel Foucault's biopolitics is a flaccid premonition of cyborg politics, a very open field. "
+
+        ];
+
+        const button = document.getElementById('unlearn-button');
+        const display = document.getElementById('sentence-display');
+
+        function checkOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
+            // Check if two rectangles overlap
+            return !(x1 + w1 < x2 || x2 + w2 < x1 || y1 + h1 < y2 || y2 + h2 < y1);
+        }
+
+        function getRandomPosition() {
+            const buttonRect = button.getBoundingClientRect();
+            const padding = 20; // Extra space around button
+
+            let randomX, randomY;
+            let attempts = 0;
+            const maxAttempts = 100;
+
+            do {
+                randomX = Math.random() * (window.innerWidth - display.offsetWidth);
+                randomY = Math.random() * (window.innerHeight - display.offsetHeight);
+                attempts++;
+            } while (
+                attempts < maxAttempts &&
+                checkOverlap(
+                    randomX, randomY, display.offsetWidth, display.offsetHeight,
+                    buttonRect.left - padding, buttonRect.top - padding,
+                    buttonRect.width + padding * 2, buttonRect.height + padding * 2
+                )
+            );
+
+            return { x: randomX, y: randomY };
+        }
+
+        button.addEventListener('click', function() {
+            // Get random sentence
+            const randomIndex = Math.floor(Math.random() * sentences.length);
+            display.textContent = sentences[randomIndex];
+
+            // Get random position that doesn't overlap with button
+            const position = getRandomPosition();
+            display.style.left = position.x + 'px';
+            display.style.top = position.y + 'px';
+        });
+    </script>
+</body>
+</html>
